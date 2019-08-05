@@ -4,6 +4,7 @@
 			<header-view title="蜜果"></header-view>
 			<banner-view></banner-view>
 		</div>
+		<album-list></album-list>
 	</div>
 </template>
 
@@ -12,11 +13,13 @@ import { mapState } from 'vuex';
 import ChannelView from '@/components/views/Channel.vue';
 import HeaderView from '@/components/modules/Header.vue';
 import BannerView from '@/components/modules/Banner.vue';
+import AlbumList from '@/components/album/albumList.vue';
 export default {
 	components: {
 		ChannelView,
 		HeaderView,
-		BannerView
+		BannerView,
+		AlbumList
 	},
 	data() {
 		return {

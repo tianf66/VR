@@ -2,9 +2,13 @@
 	<div class="member-centre">
 		<div class="m-header">
 			<header-view title="会员中心"></header-view>
+			<!-- 用户头像 & username start -->
 			<avatar-name></avatar-name>
+			<!-- end -->
 		</div>
+		<!-- 支付模块 && 特权模块  start -->
 		<recharge-view></recharge-view>
+		<!-- end -->
 	</div>
 </template>
 

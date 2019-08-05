@@ -35,6 +35,9 @@ export default {
 		hanldClick(item) {
 			let query = this.$route.query;
 			if(item.route == 'memberCentre') query.opt = 'year';
+			else delete query.opt;
+			if(item.route == 'vipList') query.type = 'imageList';
+			else delete query.type;
 			this.$router.push({name: `${item.route}`, query: {...query}});
 		}
 	}
@@ -44,12 +47,14 @@ export default {
 <style lang="scss" scoped>
 .footer {
 	width: 100%;
+	height: 0.5rem;
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	background: #FEFEFE;
 	box-shadow: 0 -1px 0 0 #E7E7E7;
+	z-index: 9999;
 	ul {
 		display: flex;
 		text-align: center;
@@ -85,7 +90,7 @@ export default {
 	}
 	.name {
 		font-family: PingFangSC-Medium;
-		font-size: 0.02rem;
+		font-size: 0.09rem;
 		color: #000000;
 		letter-spacing: 0;
 		margin: 0 auto;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 // axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
-import config from './../config.js';
+import config from '@/config.js';
 
 import utils from '@/utils/';
 
@@ -16,23 +16,14 @@ let store = {
 /*
     @param
 */
-store.freeVrVideoList = (params) => {
-    let page = params.page,
-        start = (page - 1) * count,
-        end = page * count - 1;
-    let data = {
-        ...params,
-        // start,
-        count
-    };
+store.getAlbum = (params) => {
     return new Promise((resolve, reject) => {
         axios({
-            url: urls.freeVrVideoList,
-            timeout: 5000,
-            params: data
+            url: urls[params.type],
+            timeout: 3000,
+            params: params
         }).then((response) => {
             let res = response.data;
-            console.log(res);
             if(res.code === 1) {
                 resolve(res.data);
             }

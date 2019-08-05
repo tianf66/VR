@@ -10,8 +10,8 @@ import axios from 'axios';
 Vue.config.productionTip = false
 
 
-import { Swipe, SwipeItem, Tab, Tabs} from 'vant';
-Vue.use(Swipe).use(SwipeItem).use(Tab).use(Tabs);
+import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List   } from 'vant';
+Vue.use(Swipe).use(SwipeItem).use(Tab).use(Tabs).use(PullRefresh).use(Toast).use(Loading).use(Image).use(List);
 
 /* eslint-disable no-new */
 

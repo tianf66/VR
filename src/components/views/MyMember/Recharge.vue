@@ -24,14 +24,23 @@
 			<p class="title">微信支付</p>
 			<p class="sprite play-radio"></p>
 		</div>
+		<!-- 会员特权 start -->
+		<vip-privilege></vip-privilege>
+		<!-- end -->
+
+		<!-- 支付button start -->
+		<div class="sub-buttom">
+			立即支付
+		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import VipPrivilege from '@/components/views/MyMember/VipPrivilege';
 export default {
 	components: {
-		//
+		VipPrivilege
 	},
 	data() {
 		return {
@@ -70,6 +79,7 @@ export default {
 			.title {
 				font-family: PingFangSC-Semibold;
 				font-size: 0.2rem;
+			    font-weight: bold;
 				color: #333333;
 				letter-spacing: 2px;
 			}
@@ -110,6 +120,7 @@ export default {
 			.price-day {
 				position: absolute;
 				right: 0.15rem;
+				bottom: 0.1rem;
 				font-family: PingFangSC-Medium;
 				font-size: 0.25rem;
 				margin-left: 0.12rem;
@@ -139,12 +150,12 @@ export default {
 	}
 }
 .pay {
-	width: 100%;
 	height: 0.5rem;
 	line-height: 0.5rem;
 	display: flex;
 	border-top: 5px solid #F5F5F5;
-	padding: 0.1rem;
+	border-bottom: 5px solid #F5F5F5;
+	padding: 0.1rem 0.15rem;
 	position: relative;
 	.wx-icon{
 		display: inline-block;
@@ -166,10 +177,25 @@ export default {
 		width: 0.25rem;
 		height: 0.25rem;
 		position: absolute;
-		right: 0.4rem;
+		right: 0.2rem;
 		top: 0.2rem;
 		background-size: 3rem;
 	    background-position: -0.81rem -1.26rem;
 	}
+}
+.sub-buttom {
+	font-family: DroidSansFallback;
+	width: 92%;
+	height: 0.4rem;
+	margin: 0 auto;
+	line-height: 0.4rem;
+	margin-top: 0.2rem;
+	margin-bottom: 0.8rem;
+	font-size: 0.2rem;
+	color: #663D00;
+	text-align: center;
+	background-image: linear-gradient(-93deg, #FFDF89 0%, #F2CA5A 92%);
+	box-shadow: 0 10px 4px 0 rgba(243,203,93,0.30);
+	border-radius: 100px;
 }
 </style>
