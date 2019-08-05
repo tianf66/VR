@@ -1,9 +1,10 @@
 <template>
 	<div class="footer">
 		<ul>
-			<li>首页</li>
-			<li>VIP专区</li>
-			<li>会员专区</li>
+			<li v-for="item in footerNav" @click="hanldClick(item)">
+				<p class="sprite icon" :class="currRoute == item.route ? item.checkicon: item.icon"></p>
+				<span class="name">{{item.name}}</span>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -20,32 +21,74 @@ export default {
 		}
 	},
 	computed: {
-		//
+		...mapState({
+            footerNav: (state) => state.common.footerNav
+        }),
+		currRoute() {
+			return this.$route.name;
+		}
 	},
 	mounted() {
 		//
+	},
+	methods: {
+		hanldClick(item) {
+			let query = this.$route.query;
+			if(item.route == 'memberCentre') query.opt = 'year';
+			this.$router.push({name: `${item.route}`, query: {...query}});
+		}
 	}
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .footer {
 	width: 100%;
 	position: fixed;
-	background: #f2f3f3;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 0.4rem;
+	background: #FEFEFE;
+	box-shadow: 0 -1px 0 0 #E7E7E7;
 	ul {
 		display: flex;
 		text-align: center;
 		justify-content: space-between;
 		li {
 			width: 33.3%;
-			line-height: 0.4rem;
-			border: 1px solid #f2f3f3;
+			text-align: center;
 		}
+	}
+	.home-icon {
+	    background-position: -0.07rem -0.64rem;
+	}
+	.vip-icon {
+		background-position: -0.07rem -0.06rem;
+	}
+	.member-centre-icon {
+		background-position: -0.06rem -1.23rem;
+	}
+	.check-home-icon {
+	    background-position: -0.07rem -0.92rem;
+	}
+	.check-vip-icon {
+		background-position: -0.07rem -0.36rem;
+	}
+	.check-member-centre-icon {
+		background-position: -0.06rem -1.51rem;
+	}
+	.icon {
+		width: 0.23rem;
+	    height: 0.23rem;
+	    background-size: 3rem;
+	    margin: 0.05rem auto 0;
+	}
+	.name {
+		font-family: PingFangSC-Medium;
+		font-size: 0.02rem;
+		color: #000000;
+		letter-spacing: 0;
+		margin: 0 auto;
 	}
 }
 </style>

@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 
 // 列表页
 import channel from './channel/';
+//公共
+import common from './common/';
 
 // 告诉 vue “使用” vuex
 Vue.use(Vuex);
@@ -14,5 +16,6 @@ export default new Vuex.Store({
 	// 组合各个模块
 	modules: {
 		channel,
+		common
 	}
 });

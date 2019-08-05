@@ -227,11 +227,15 @@ img {
   }
 }
 body {
-  background: #f2f3f3;
+  /* background: #f2f3f3; */
   font-size: 0.16rem;
 }
 /*----------适配结束----------*/
 
+/* .sprite {
+    background: url(//i.opfed.com/opgirl/v2/sprite.png) no-repeat;
+}
+ */
 .animated {
   animation-duration: 1s;
   animation-fill-mode: both;

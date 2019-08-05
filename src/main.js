@@ -9,7 +9,20 @@ import axios from 'axios';
 
 Vue.config.productionTip = false
 
+
+import { Swipe, SwipeItem, Tab, Tabs} from 'vant';
+Vue.use(Swipe).use(SwipeItem).use(Tab).use(Tabs);
+
 /* eslint-disable no-new */
+
+router.beforeEach((to, from, next)=>{
+	// console.log(to, from);
+	// if((to.name == 'vipList' || from.name == 'vipList')) {
+	// 	router.push({"name": "login", query: {"from": from.name}});
+	// }
+	next();
+});
+
 new Vue({
   el: '#app',
   router,
