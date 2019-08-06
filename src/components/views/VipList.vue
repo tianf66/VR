@@ -52,7 +52,7 @@ export default {
 	methods: {
 		tabClick(name) {
 			let query = this.$route.query;
-			this.$router.replace({name: "vipList", query: {...query, type: name}})
+			this.$router.replace({name: "vipList", query: {...query, type: name}});
 		}
 	}
 }

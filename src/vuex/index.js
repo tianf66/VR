@@ -7,7 +7,8 @@ import channel from './channel/';
 import common from './common/';
 //列表
 import album from './album/';
-
+//用户
+import user from './user/'
 // 告诉 vue “使用” vuex
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
 	modules: {
 		channel,
 		common,
-		album
+		album,
+		user
 	}
 });

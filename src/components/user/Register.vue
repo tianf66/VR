@@ -20,13 +20,13 @@
             <input type="password" placeholder="请输入密码" v-model="passwd" @blur="checkPassword('password')"/>
             <label :class="['tip', passwdErr ? 'error' : '']">请输入6~20个字符</label>
         </section>
-        <div class="info-entry">
+        <!-- <div class="info-entry">
             <i class="agree_1" v-if="agree_1" @click="agreeA"></i>
             <i class="agree_2" v-if="agree_2" @click="agreeB"></i>
             <span>已阅读并同意
-                <!-- <router-link to="/protocol">《小欧用户协议手册》</router-link> -->
+                <router-link to="/protocol">《小欧用户协议手册》</router-link>
             </span>
-        </div>
+        </div> -->
         <section>
             <a :class="['login-btn', 'before-btn', phoneOk && passwdOk && codeOk && agree_1 ? 'after-btn' : '']" @click="toRegister">注册</a>
         </section>
@@ -71,9 +71,6 @@ export default {
     mounted() {
     },
     computed: {
-        aid() {
-            return this.$store.state.common.ads.lc.s;
-        }
     },
     watch: {
         number: function() {
@@ -108,27 +105,6 @@ export default {
                 this.codeOk = false;
             }
         },
-//      checkName: function(type) {
-//          if(user.checkValue(this.username, type)) {
-//              this.$store.dispatch('checkUsername', base64Encode(this.username)).then((res) => {
-//                  if(res.status == 1) {
-//                      fadeOut.main('该用户名已被注册');
-//                      this.nameErr = true;
-//                  } else if(res.status == 0) {
-//                      this.nameErr = false;
-//                  } else {
-//                      this.nameErr = true;
-//                      fadeOut.main('用户名注册失败');
-//                  }
-//              });
-//
-//          } else {
-//              if(this.username) {
-//                  this.nameErr = true;
-//                  fadeOut.main('用户名不能含有除汉字、数字、字母外的其它字符');
-//              } else this.nameErr = false;
-//          }
-//      },
         checkPassword: function(type) {
             if(user.checkValue(this.passwd, type) || !this.passwd) {
                 this.passwdErr = false;
@@ -145,63 +121,47 @@ export default {
         },
         codeParams: function() {
             let params = {};
-            params.type = 1;
-            params.phone = base64Encode(this.number);
+            // params.type = 1;
+            // params.phone = base64Encode(this.number);
+            params.phone = parseInt(this.number);
             return params;
         },
         getCodeHandle: function() {
             if(!this.numberErr) {
-            	if(!this.number) fadeOut.main('请填写手机号码');
+            	if(!this.number) this.$toast('请填写手机号码');
                 else if(!this.codding) {
                     this.$store.dispatch('getCode', this.codeParams()).then((res) => {
-                        if(res.status == 0) {
-                            // fadeOut.main('验证码已发送');
-                            this.countDown();
-                        }
-                        else if(res.status == 1) fadeOut.main('该手机号已注册');
-                        else fadeOut.main('获取验证码失败');
+                        console.log(res);
+                        if(res.code == 1) this.countDown();
+                        else this.$toast('获取验证码失败');
                     });
                 }
             }
-//          else {
-//              if(this.number ==0) fadeOut.main('请先填写手机号');
-//          }
         },
         registerParams: function() {
             let params = {
-                pass: base64Encode(this.passwd),
-                phone: base64Encode(this.number),
-                code: base64Encode(this.code)
+                // pass: base64Encode(this.passwd),
+                // phone: base64Encode(this.number),
+                // code: base64Encode(this.code)
             };
+            params.password = this.passwd;
+            params.phone = parseInt(this.number);
+            params.smsCode = this.code;
+
             return params;
         },
         toRegister: function() {
             let _this = this;
-            if(!this.number) fadeOut.main('请输入手机号');
-            else if(!this.code) fadeOut.main('请输入验证码');
-            else if(!this.passwd) fadeOut.main('请输入密码');
+            if(!this.number) this.$toast('请输入手机号');
+            else if(!this.code) this.$toast('请输入验证码');
+            else if(!this.passwd) this.$toast('请输入密码');
             if(!this.passwdErr && !this.numberErr && this.agree_1) {
                 if(this.number && this.code && this.passwd) {
-                        this.$store.dispatch('register', this.registerParams()).then((res) => {
-                            if(res.status == 0) {
-                                fadeOut.main('注册成功');
-                                OUPENGLOGGER({
-                                    action: 'register'
-                                });
-                                let query = _this.$route.query;
-                                query.first = 'off';
-                                if(query.cid) {
-                                    _this.$router.push({name: 'channel', params: query, query: {did: query.did}});
-                                    return;
-                                }
-                                _this.$router.push({path: '/home', query});
-                            }
-                            if(res.status == 1) fadeOut.main(res.msg);
-                        });
-                    }
+
+                    this.$store.dispatch('getRegister', this.registerParams()).then((res) => {
+                        this.$toast(`${data.msg}`);
+                    });
                 }
-            if(this.number && this.code && this.passwd) {
-                //
             }
         },
         countDown: function() {
@@ -221,14 +181,14 @@ export default {
                 }
             }, 1000);
         },
-        agreeA: function() {
-        	this.agree_1 = false;
-        	this.agree_2 = true;
-        },
-        agreeB: function(){
-        	this.agree_1 = true;
-        	this.agree_2 = false;
-        },
+        // agreeA: function() {
+        // 	this.agree_1 = false;
+        // 	this.agree_2 = true;
+        // },
+        // agreeB: function(){
+        // 	this.agree_1 = true;
+        // 	this.agree_2 = false;
+        // },
         reset: function() {
             this.passwd = '';
             this.passwdErr = false;
@@ -237,8 +197,8 @@ export default {
             this.code = '';
             this.codeMsg = '获取验证码';
             this.codding = false;
-            this.agree_1 = true;
-            this.agree_2 = false;
+            // this.agree_1 = true;
+            // this.agree_2 = false;
             this.disabledCode = false;
             this.codeOk = false;
             this.phoneOk = false;
@@ -254,8 +214,8 @@ export default {
             vm.actived = true;
             vm.time = Date.now();
             vm.reset();
-            if(storage.get('detailComment'))
-                storage.remove('detailComment');
+            // if(storage.get('detailComment'))
+                // storage.remove('detailComment');
         });
     },
     beforeRouteLeave(to, from, next) {
@@ -267,8 +227,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// @import '../../yo/usage/core/common';
-// $padding: map-get($base, global-padding);
 .box-center {
     padding: 0 0.35rem;
     .marginTop {
@@ -306,6 +264,8 @@ export default {
             color: #999;
             background: white;
             border: 0;
+            font-size: 0.12rem;
+            outline: none;
         }
     }
     .info-entry {
@@ -347,8 +307,8 @@ export default {
         margin: 0.48rem auto 0;
     }
     .after-btn {
-        background-color: #5DAFFF;
-        color: #fff;
+        background-color: #F13031 !important;
+        color: #fff !important;
     }
     .before-btn {
         background-color: #EAECF2;

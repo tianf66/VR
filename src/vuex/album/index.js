@@ -5,7 +5,10 @@ const state = {
     home: {
         done: false,
         page: 0,
-        lists: []
+        lists: {}
+    },
+    channel: {
+        lists: [],
     },
     imageList: {
         done: false,

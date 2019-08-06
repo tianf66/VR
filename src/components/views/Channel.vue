@@ -1,17 +1,19 @@
 <template>
 	<div>
-		<nav-view></nav-view>
-		<!-- <div id="panoDesk"></div> -->
+		<header-view :back="true" :title="title"></header-view>
+		<album-list :type="listType"></album-list>
 	</div>
 </template>
 
 <script>
-import NavView from '@/components/modules/Nav.vue';
+import HeaderView from '@/components/modules/Header.vue';
+import AlbumList from '@/components/album/albumList.vue';
 import { mapState } from 'vuex';
 // import utils from '@/utils/index';
 export default {
 	components: {
-		NavView
+		HeaderView,
+		AlbumList
 	},
 	data() {
 		return {
@@ -21,49 +23,22 @@ export default {
 	computed: {
 		...mapState({
             index: (state) => state.channel.index
-        })
+        }),
+        listType() {
+        	return this.$route.query.type;
+        },
+        title() {
+        	let type = this.listType;
+        	let title = type == 'imageList' ? '精选美图' : type == 'videoList' ? '精选视频' : '精彩VR';
+        	return title;
+        }
 	},
 	mounted() {
-		// utils.loadScript('//s.opfed.com/lib/player/UtoVRPlayerGuide.js', false, () => {
-		// 	var params = {
-		//         container: document.getElementById("panoDesk"),
-		//         name: "SceneViewer",
-		//         isGyro: true,
-		//         scenesArr: [
-		//             //todo:注意修改视频路径，需要保证播放页面与视频属于同一域名下
-		//             {
-		//             	sceneId: "v1",
-		//             	sceneName: "赛车",
-		//             	sceneFilePath: "../../../static/[www.vrhd8.com]henvshenyiqijianshen.mp4",
-		//             	sceneType: "Video",
-		//             	initFov: 110
-		//             }
-		//         ],
-		//         //播放器不支持全景播放回调
-		//         errorCallBack: function (e) {
-		//             console.log("错误状态：" + e);
-		//         },
-		//         //浏览器不支持全屏回调
-		//         fsCallBack: function (status, playObj) {
-		//             alert("浏览器不支持全屏！");
-		//         }
-		//     };
-		//     /*初始化开始*/
-		//     window.onload = function () {
-		//         initLoad(params);
-		//     };
-		// });
+		//
 	}
 }
 </script>
 
-<style>
-	#panoDesk {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left:0px;
-        top:0px;
-        overflow: hidden;
-   	}
+<style lang="scss" scoped>
+
 </style>

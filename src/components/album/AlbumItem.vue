@@ -1,5 +1,5 @@
 <template>
-	<div class="album-item">
+	<div class="album-item" @click="hanldClick(item)">
 		<span v-if="item.isFree" class="sprite vip-icon"></span>
 		<van-image :src="item.coverUrl" width="100%">
 			<template v-slot:loading>
@@ -7,14 +7,13 @@
 			</template>
 			<template v-slot:error class="img-error">加载失败</template>
 		</van-image>
-
-		<!-- <div class="sprite vip-cion">123</div> -->
-		<div class="title" v-if="type == 'videoList'">{{ item.title }}</div>
+		<div class="title" v-if="type != 'imageList'">{{ item.title }}</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import storage from '@/utils/storage.js';
 export default {
 	components: {
 		//
@@ -25,7 +24,7 @@ export default {
 	},
 	data() {
 		return {
-			//
+			userInfo: storage.get('user')
 		}
 	},
 	computed: {
@@ -37,7 +36,20 @@ export default {
 		//
 	},
 	methods: {
-		//
+		hanldClick(item) {
+			let $router = this.$router, query = this.$route.query, route = this.$route;
+			query = {
+				...query,
+				first: route.name,
+				id: item.id,
+				isFree: item.isFree
+			}
+			if(!this.userInfo) {
+				$router.push({"name": 'login', query: query});
+			} else {
+				$router.push({"name": 'detail', query: query});
+			}
+		}
 	}
 }
 </script>

@@ -171,7 +171,7 @@ export default {
 		font-size: 0.18rem;
 		color: #333333;
 		letter-spacing: 2.5px;
-		margin-left: 0.1rem;
+		margin: 0 0 0.18rem 0.1rem;
 	}
 	.play-radio {
 		width: 0.25rem;

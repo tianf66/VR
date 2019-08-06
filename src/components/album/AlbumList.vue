@@ -3,7 +3,7 @@
 		<van-pull-refresh v-model="isLoading" @refresh="onRefresh">
 			<van-list
 			  v-model="list_loading"
-			  :finished="finished"
+			  :finished="done"
 			  finished-text="没有更多了"
 			  @load="onLoad">
 			  	<div
@@ -41,7 +41,6 @@ export default {
 		return {
 			loading: true,
 			list_loading: false,
-			finished: false,
 			isLoading: false,
 			page: 1
 		}
@@ -53,12 +52,26 @@ export default {
         lists() {
         	let album = this.$store.state.album;
             let type = this.type;
-            return album[type].lists || [];
+            return type ? album[type].lists : [];
         },
         listCol() {
         	const winWidth = document.body.offsetWidth;
         	return Math.max(Math.floor(winWidth / 160), 2)
+        },
+        done() {
+        	let album = this.$store.state.album;
+            let type = this.type;
+            return type ? album[type].done : false;
         }
+	},
+	watch: {
+		$route(to, from) {
+			if(to.name == 'channel' && from.name == 'home') {
+				this.$store.commit({type: "CLEARLIST", payload: {type: this.type}});
+				this.page = 1;
+		        this.loadAlbum();
+			}
+	    },
 	},
 	mounted() {
 		this.loadAlbum();
@@ -68,15 +81,13 @@ export default {
 			return {
 				type: this.type,
 				page: this.page,
-				rows: 20
+				rows: 10
 			}
 		},
 		loadAlbum() {
 			this.list_loading = true;
-			console.log('loadAlbum');
 			this.$store.dispatch('loadAlbum', this.params()).then((res) => {
 				this.loading = false;
-				// this.finished = true;
 	        	this.list_loading = false;
 			});
 		},
@@ -84,6 +95,12 @@ export default {
 	      setTimeout(() => {
 	        this.$toast('刷新成功');
 	        this.isLoading = false;
+	        this.$store.commit({
+	        	type: "CLEARLIST",
+	        	payload: {
+	        		type: this.type
+	        	}
+	        });
 	        this.page = 1;
 	        this.loadAlbum();
 	      }, 500);

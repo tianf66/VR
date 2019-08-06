@@ -25,7 +25,9 @@ export default {
             footerNav: (state) => state.common.footerNav
         }),
 		currRoute() {
-			return this.$route.name;
+			let name = this.$route.name;
+			if(name == 'channel') name = 'home';
+			return name;
 		}
 	},
 	mounted() {

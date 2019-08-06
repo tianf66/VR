@@ -54,14 +54,14 @@ export default {
 	}
 	.back-icon {
         position: relative;
-        top: 0.05rem;
-        display: inline-block;
-        width: 0.19rem;
-        height: 0.16rem;
-        margin-right: 0.1rem;
-        vertical-align: text-top;
-        background-size: 2.26rem auto;
-        background-position: -0.3rem -0.7rem;
+	    /* top: 0.05rem; */
+	    display: inline-block;
+	    width: 0.3rem;
+	    height: 0.3rem;
+	    margin-right: 0.1rem;
+	    vertical-align: text-top;
+	    background-size: 3rem;
+	    background-position: -0.44rem -1.5rem;
     }
 }
 </style>

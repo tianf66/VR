@@ -30,6 +30,7 @@
 import user from '@/utils/user.js';
 import HeaderView from '@/components/modules/Header.vue';
 import {base64Encode} from '@/utils/base64.js';
+import storage from '@/utils/storage.js';
 export default {
     name: 'login',
     components: {
@@ -101,30 +102,25 @@ export default {
         loginParams: function() {
             let params = {
 //              user: base64Encode(this.username),
-                pass: base64Encode(this.passwd),
-                phone:base64Encode(this.userphone)
+                // pass: base64Encode(this.passwd),
+                // phone:base64Encode(this.userphone)
             };
+            params.password = this.passwd;
+            params.phone = parseInt(this.userphone);
             return params;
         },
         toLogin: function() {
             let _this = this;
-            this.$store.dispatch('login', this.loginParams()).then((res) => {
-                if(res.status == 0) {
-                    _this.errorMsg = '';
-                    OUPENGLOGGER({
-                        action: 'login'
-                    });
+            this.$store.dispatch('getLogin', this.loginParams()).then((res) => {
+                if(res.code == 1) {
+                    let info = res.data;
+                    if(storage.get('user')) storage.remove('user');
+                    storage.set('user', info);
                     let query = _this.$route.query;
-                    query.first = 'off';
-                    if(query.cid) {
-                        _this.$router.push({name: 'channel', params: query, query: {did: query.did}});
-                        return;
-                    }
-
-                    window.history.go(-1);
+                    _this.$router.push({name: `${query.first}`, query: {...query}});
+                } else {
+                    this.$toast(`${res.msg}`);
                 }
-                else if(res.status == 1) _this.errorMsg = '手机号密码错误';
-                else _this.errorMsg = '该用户被禁用，请联系管理员';
             });
         },
         passTol: function() {
@@ -202,8 +198,8 @@ export default {
         color: #333;
     }
     .after-btn {
-        background-color: #5DAFFF;
-        color: #ffffff;
+        background-color: #F13031 !important;
+        color: #fff !important;
     }
     .login-tip {
         text-align: center;

@@ -21,12 +21,12 @@
             <input type="password" placeholder="重复输入密码" v-model="repasswd" @blur="diffPasswd"/>
             <label class="tip error" v-show="repasswdErr">密码不一致</label>
         </section>
-        <div class="info-entry">
+        <!-- <div class="info-entry">
             <i :class="agreeCheck ? 'agree_1' : 'agree_2'" @click="agreeA"></i>
             <span>已阅读并同意
-                <!-- <router-link to="/protocol">《小欧用户协议手册》</router-link> -->
+                <router-link to="/protocol">《小欧用户协议手册》</router-link>
             </span>
-        </div>
+        </div> -->
         <section>
             <a :class="['login-btn', 'before-btn', phoneOk && passwdOk && passwd2Ok && codeOk && agreeCheck ? 'after-btn' : '']" @click="sureModify">确定</a>
         </section>
@@ -275,8 +275,8 @@ export default {
         margin: 0.48rem auto;
     }
     .after-btn {
-        background-color: #5DAFFF;
-        color: #fff;
+        background-color: #F13031 !important;
+        color: #fff !important;
     }
     .tip {
         color: #eeeeee;
