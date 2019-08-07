@@ -32,4 +32,14 @@ export default {
             });
         });
     },
+    getToken({commit, state, dispatch}, params) {
+        return new Promise((resolve, reject) => {
+            dataCenter.getToken(params).then((res) => {
+                let data = res;
+                resolve(data);
+            }, (err) => {
+                //
+            });
+        });
+    },
 };

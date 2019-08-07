@@ -34,16 +34,30 @@ router.beforeEach((to, from, next)=>{
 	} else {
 		//
 	}
-	if(userInfo) {
-		store.commit({
-	        type: 'SERUSERVIP',
-	        payload: {
-	        	isVip: userInfo.isVip
-	        }
-	    });
-	}
+	// if(userInfo) {
+	// 	store.commit({
+	//         type: 'SERUSERVIP',
+	//         payload: {
+	//         	isVip: userInfo.isVip
+	//         }
+	//     });
+	// }
 	next();
 });
+
+// axios.interceptors.request.use(
+//   config => {
+//   	let token = storage.get('user').token;
+//   	console.log(token);
+//     if (token) {
+//       config.headers.token = token;
+//     }
+//     return config;
+//   },
+//   err => {
+//     return Promise.reject(err);
+//   }
+// );
 
 new Vue({
   el: '#app',

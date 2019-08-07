@@ -34,7 +34,7 @@ export default {
 		            {
 		                sceneId: "374235dasd",
 		                sceneName: "美女",
-		                sceneFilePath: "../../../static/64_aac.mp4",
+		                sceneFilePath: "../../../static/c.mp4",
 		                sceneType: "Video",
 		                isVideoAutoPlay: true  //todo:注意isVideoAutoPlay 是H5 模式下的播放属性，不适用于移动端
 		            }

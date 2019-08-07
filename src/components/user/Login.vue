@@ -124,11 +124,23 @@ export default {
                         }
                     });
                     storage.set('user', info);
+                    _this.getToken(info);
                     let query = _this.$route.query;
                     _this.$router.push({name: `${query.first}`, query: {...query}});
                 } else {
                     this.$toast(`${res.msg}`);
                 }
+            });
+        },
+        getToken(info) {
+            let params = {};
+            params.password = this.passwd;
+            params.phone = parseInt(this.userphone);
+
+            this.$store.dispatch('getToken', params).then((res) => {
+                let data = res.data;
+                info.token = data;
+                storage.set('user', info);
             });
         },
         passTol: function() {

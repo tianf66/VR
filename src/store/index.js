@@ -1,9 +1,17 @@
 import axios from 'axios';
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+import storage from '@/utils/storage.js';
+
 import config from '@/config.js';
 
 import utils from '@/utils/';
+
+let token = storage.get('user').token;
+
+if(token) {
+    // axios.defaults.headers['token'] = token;
+}
 
 let urls = config.urls;
 
@@ -21,7 +29,10 @@ store.getAlbum = (params) => {
         axios({
             url: urls[params.type],
             timeout: 3000,
-            params: params
+            params: params,
+            headers: {
+                'token': token
+            },
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
@@ -38,7 +49,7 @@ store.getHome = (params) => {
         axios({
             url: urls.home,
             timeout: 3000,
-            params: params
+            params: params,
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
@@ -56,7 +67,10 @@ store.getDetail = (params) => {
         axios({
             url: urls[params.urls],
             timeout: 3000,
-            params
+            params,
+            headers: {
+                'token': token
+            },
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
@@ -125,6 +139,25 @@ store.getLogin = (params) => {
                 resolve(data);
             } else {
                 reject(data.data);
+            }
+        }).catch((e) => {
+            reject('error');
+        });
+    });
+}
+
+//token 获取token
+store.getToken = (params) => {
+    return new Promise((resolve, reject) => {
+        axios.post(urls.token, params, {
+            timeout: 5000,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            let data = response.data;
+            if(data.code === 1) {
+                resolve(data);
             }
         }).catch((e) => {
             reject('error');
