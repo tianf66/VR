@@ -21,10 +21,25 @@ const state = {
         lists: []
     },
     vrVideoList: {
+        done: false,
+        page: 0,
+        lists: []
+    },
+    vipImageList: {
+        done: false,
+        page: 0,
+        lists: []
+    },
+    vipVideoList: {
+        done: false,
+        page: 0,
+        lists: []
+    },
+    vipVrVideoList: {
     	done: false,
         page: 0,
         lists: []
-    }
+    },
 };
 
 import actions from './actions.js';

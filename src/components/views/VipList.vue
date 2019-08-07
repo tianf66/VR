@@ -26,9 +26,9 @@ export default {
 	data() {
 		return {
 			channelItem: [
-				{"name": "精选美图", "type": "imageList"},
-				{"name": "精选视频", "type": "videoList"},
-				{"name": "精彩VR", "type": "vrVideoList"},
+				{"name": "精选美图", "type": "vipImageList"},
+				{"name": "精选视频", "type": "vipVideoList"},
+				{"name": "精彩VR", "type": "vipVrVideoList"},
 			]
 		}
 	},

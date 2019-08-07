@@ -67,14 +67,18 @@ export default {
 	watch: {
 		$route(to, from) {
 			if(to.name == 'channel' && from.name == 'home') {
-				this.$store.commit({type: "CLEARLIST", payload: {type: this.type}});
+				this.clearList();
 				this.page = 1;
 		        this.loadAlbum();
 			}
 	    },
 	},
-	mounted() {
+	beforeMount() {
+		this.clearList();
 		this.loadAlbum();
+	},
+	mounted() {
+		//
 	},
 	methods: {
 		params() {
@@ -95,12 +99,7 @@ export default {
 	      setTimeout(() => {
 	        this.$toast('刷新成功');
 	        this.isLoading = false;
-	        this.$store.commit({
-	        	type: "CLEARLIST",
-	        	payload: {
-	        		type: this.type
-	        	}
-	        });
+	        this.clearList();
 	        this.page = 1;
 	        this.loadAlbum();
 	      }, 500);
@@ -112,6 +111,14 @@ export default {
 	      	this.loadAlbum();
 	        // 加载状态结束
 	      }, 1000);
+	    },
+	    clearList() {
+	    	this.$store.commit({
+	        	type: "CLEARLIST",
+	        	payload: {
+	        		type: this.type
+	        	}
+	        });
 	    }
 	}
 }

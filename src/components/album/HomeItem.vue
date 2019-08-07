@@ -1,6 +1,7 @@
 <template>
 	<div class="album-item">
-		<div class="item" v-for="(item, index) in item">
+		<div class="item" @click="hanldClick(item)" v-for="(item, index) in item">
+			<span v-if="!item.isFree" class="sprite vip-icon"></span>
 			<van-image :src="item.coverUrl" width="100%">
 				<template v-slot:loading>
 			  		<van-loading type="spinner" size="20" />
@@ -14,6 +15,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import storage from '@/utils/storage.js';
 export default {
 	components: {
 		//
@@ -36,7 +38,21 @@ export default {
 		//
 	},
 	methods: {
-		//
+		hanldClick(item) {
+			let $router = this.$router, query = this.$route.query, route = this.$route;
+			query = {
+				...query,
+				type: this.type,
+				first: route.name,
+				id: item.id,
+				isFree: item.isFree
+			}
+			if(!storage.get('user')) {
+				$router.push({"name": 'login', query: query});
+			} else {
+				$router.push({"name": 'detail', query: query});
+			}
+		}
 	}
 }
 </script>
@@ -65,6 +81,16 @@ export default {
 		font-size: 0.15rem;
 		color: #000000;
 		letter-spacing: 0;
+	}
+	.vip-icon {
+		position: absolute;
+		top: 0.1rem;
+		right: 0.05rem;
+		width: 0.4rem;
+		height: 0.2rem;
+		background-size: 3rem;
+		background-position: -0.35rem -0.0605rem;
+		z-index: 99;
 	}
 }
 </style>

@@ -50,6 +50,24 @@ store.getHome = (params) => {
     })
 }
 
+store.getDetail = (params) => {
+    // imageDetail\videoDetail
+    return new Promise((resolve, reject) => {
+        axios({
+            url: urls[params.urls],
+            timeout: 3000,
+            params
+        }).then((response) => {
+            let res = response.data;
+            if(res.code === 1) {
+                resolve(res.data);
+            }
+        }).catch((res) => {
+            reject();
+        })
+    });
+}
+
 //用户注册
 // register
 store.getRegister = (params) => {

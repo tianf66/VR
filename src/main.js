@@ -6,20 +6,42 @@ import App from './App'
 import router from './router'
 import store from './vuex/index.js';
 import axios from 'axios';
+import storage from './utils/storage.js';
 
 Vue.config.productionTip = false
 
 
-import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List   } from 'vant';
-Vue.use(Swipe).use(SwipeItem).use(Tab).use(Tabs).use(PullRefresh).use(Toast).use(Loading).use(Image).use(List);
+import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List, ImagePreview } from 'vant';
+Vue.use(Swipe).
+use(SwipeItem).
+use(Tab).
+use(Tabs).
+use(PullRefresh).
+use(Toast).
+use(Loading).
+use(Image).
+use(List).
+use(ImagePreview);
 
 /* eslint-disable no-new */
 
 router.beforeEach((to, from, next)=>{
 	// console.log(to, from);
-	// if((to.name == 'vipList' || from.name == 'vipList')) {
-	// 	router.push({"name": "login", query: {"from": from.name}});
-	// }
+	let userInfo = storage.get('user');
+	let query = to.query;
+	if(to.name == 'memberCentre' && !userInfo) {
+		router.push({"name": "login", query: {...query, first: to.name}});
+	} else {
+		//
+	}
+	if(userInfo) {
+		store.commit({
+	        type: 'SERUSERVIP',
+	        payload: {
+	        	isVip: userInfo.isVip
+	        }
+	    });
+	}
 	next();
 });
 

@@ -115,6 +115,14 @@ export default {
                 if(res.code == 1) {
                     let info = res.data;
                     if(storage.get('user')) storage.remove('user');
+                    // info.isVip = base64Encode('oupengVip');
+                    if(info.isVip) info.isVip = base64Encode('oupengVip');
+                    this.$store.commit({
+                        type: 'SERUSERVIP',
+                        payload: {
+                            isVip: info.isVip
+                        }
+                    });
                     storage.set('user', info);
                     let query = _this.$route.query;
                     _this.$router.push({name: `${query.first}`, query: {...query}});

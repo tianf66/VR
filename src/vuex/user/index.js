@@ -2,7 +2,8 @@
 /***************************************************************/
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
-    index: 0
+    index: 0,
+    isVip: false
 };
 
 import actions from './actions.js';

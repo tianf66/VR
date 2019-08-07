@@ -1,6 +1,6 @@
 <template>
 	<div class="album-item" @click="hanldClick(item)">
-		<span v-if="item.isFree" class="sprite vip-icon"></span>
+		<span v-if="!item.isFree" class="sprite vip-icon"></span>
 		<van-image :src="item.coverUrl" width="100%">
 			<template v-slot:loading>
 		  		<van-loading type="spinner" size="20" />
@@ -24,7 +24,7 @@ export default {
 	},
 	data() {
 		return {
-			userInfo: storage.get('user')
+			//
 		}
 	},
 	computed: {
@@ -44,7 +44,7 @@ export default {
 				id: item.id,
 				isFree: item.isFree
 			}
-			if(!this.userInfo) {
+			if(!storage.get('user')) {
 				$router.push({"name": 'login', query: query});
 			} else {
 				$router.push({"name": 'detail', query: query});
