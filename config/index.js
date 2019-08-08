@@ -10,7 +10,19 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    assetsPublicPath: '/',
+    proxyTable: {
+      "/proxy/": {//以/proxy/为开头的适合这个规则
+        target: "http://172.16.10.195:8081/",//目标地址
+        "secure": false,//false为http访问，true为https访问
+        "changeOrigin": true,//跨域访问设置，true代表跨域
+        "pathRewrite": {//路径改写规则
+          "^/proxy": ""//以/proxy/为开头的改写为''
+           //下面这种也行
+          //  "^/api":"/list"//以/api/为开头的改写为'/list'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: '172.16.11.211', // can be overwritten by process.env.HOST

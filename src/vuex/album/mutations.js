@@ -21,6 +21,7 @@ export default {
         state[type].lists = [];
     },
     NOALBUMDATA(state, {payload: {type}}) {
+        console.log(type);
         state[type].done = false;
     },
 };

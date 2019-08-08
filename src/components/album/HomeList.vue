@@ -38,9 +38,9 @@ export default {
         }),
         listTool() {
         	let arr = [
-        		{"icon": "image-icon", "title": "精选美图", "more_title": "更多美图", "type": "imageList", "list": this.lists.galleryList},
+        		{"icon": "image-icon", "title": "精选美图", "more_title": "更多美图", "type": "galleryList", "list": this.lists.galleryList},
 				{"icon": "video-icon", "title": "限免视频", "more_title": "更多视频", "type": "videoList", "list": this.lists.commonVideoList},
-				{"icon": "vr-icon", "title": "精彩VR", "more_title": "更多VR", "type": "vrVideoList", "list": this.lists.vrVideoList}
+				{"icon": "vr-icon", "title": "精彩VR", "more_title": "更多VR", "type": "vrList", "list": this.lists.vrVideoList}
         	];
         	return arr;
         }

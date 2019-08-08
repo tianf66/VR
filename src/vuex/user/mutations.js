@@ -3,6 +3,6 @@ export default {
     //
     SERUSERVIP(state, {payload: {isVip}}) {
         state.isVip = base64Decode(isVip) == 'oupengVip';
-        console.log(state);
+        console.log(state.isVip, isVip);
     },
 };

@@ -38,7 +38,7 @@ export default {
 			let query = this.$route.query;
 			if(item.route == 'memberCentre') query.opt = 'year';
 			else delete query.opt;
-			if(item.route == 'vipList') query.type = 'vipImageList';
+			if(item.route == 'vipList') query.type = 'galleryList';
 			else delete query.type;
 			this.$router.push({name: `${item.route}`, query: {...query}});
 		}

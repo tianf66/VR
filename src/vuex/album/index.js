@@ -10,7 +10,7 @@ const state = {
     channel: {
         lists: [],
     },
-    imageList: {
+    galleryList: {
         done: false,
         page: 0,
         lists: []
@@ -20,26 +20,11 @@ const state = {
         page: 0,
         lists: []
     },
-    vrVideoList: {
+    vrList: {
         done: false,
         page: 0,
         lists: []
-    },
-    vipImageList: {
-        done: false,
-        page: 0,
-        lists: []
-    },
-    vipVideoList: {
-        done: false,
-        page: 0,
-        lists: []
-    },
-    vipVrVideoList: {
-    	done: false,
-        page: 0,
-        lists: []
-    },
+    }
 };
 
 import actions from './actions.js';

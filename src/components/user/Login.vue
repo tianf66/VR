@@ -19,7 +19,8 @@
             <span class='error' v-show="errorMsg">{{errorMsg}}</span>
         </section>
         <section class="login-tip">
-            <input type="button" :class="['login-btn', 'before-btn', nameOk && passwdOk ? 'after-btn' : '']"  @click="toLogin" value="登录" :disabled="disabledToLogin">
+            <a :class="['login-btn', 'before-btn', nameOk && passwdOk ? 'after-btn' : '']"  @click="toLogin" >登录</a>
+            <!-- <input type="button" :class="['login-btn', 'before-btn', nameOk && passwdOk ? 'after-btn' : '']"  @click="toLogin" value="登录" :disabled="disabledToLogin"> -->
             <router-link :to="{path: '/register', query}" class="tip-color">没有账号？去注册</router-link>
         </section>
     </div>
@@ -116,7 +117,8 @@ export default {
                     let info = res.data;
                     if(storage.get('user')) storage.remove('user');
                     // info.isVip = base64Encode('oupengVip');
-                    if(info.isVip) info.isVip = base64Encode('oupengVip');
+                    // if(info.isVip) info.isVip = base64Encode('oupengVip');
+                    info.isVip = base64Encode('oupengVip');
                     this.$store.commit({
                         type: 'SERUSERVIP',
                         payload: {

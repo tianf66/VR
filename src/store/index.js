@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router';
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 import storage from '@/utils/storage.js';
@@ -7,10 +8,12 @@ import config from '@/config.js';
 
 import utils from '@/utils/';
 
-let token = storage.get('user').token;
-
-if(token) {
-    // axios.defaults.headers['token'] = token;
+let user = storage.get('user');
+if(user) {
+    let token = storage.get('user').token;
+    if(token) {
+        axios.defaults.headers['token'] = token;
+    }
 }
 
 let urls = config.urls;
@@ -26,13 +29,12 @@ let store = {
 */
 store.getAlbum = (params) => {
     return new Promise((resolve, reject) => {
+
+        console.log(params, 'store');
         axios({
-            url: urls[params.type],
+            url: urls[params.config],
             timeout: 3000,
-            params: params,
-            headers: {
-                'token': token
-            },
+            params: params
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
@@ -65,16 +67,21 @@ store.getDetail = (params) => {
     // imageDetail\videoDetail
     return new Promise((resolve, reject) => {
         axios({
-            url: urls[params.urls],
+            url: urls[params.type],
             timeout: 3000,
-            params,
-            headers: {
-                'token': token
-            },
+            params
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
                 resolve(res.data);
+            } else if(res.code === 100) {//token失效需重新登录;
+                let query = router.history.current.query;
+                    query.first = 'detail';
+
+                router.push({name: "login", query: {...query}});
+                storage.remove('user');
+            } else {
+                reject(res.code);
             }
         }).catch((res) => {
             reject();

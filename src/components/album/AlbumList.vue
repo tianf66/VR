@@ -70,19 +70,19 @@ export default {
 				this.clearList();
 				this.page = 1;
 		        this.loadAlbum();
+		        console.log('route')
 			}
-	    },
+	    }
 	},
 	beforeMount() {
-		this.clearList();
-		this.loadAlbum();
 	},
 	mounted() {
-		//
 	},
 	methods: {
 		params() {
+			let route = this.$route;
 			return {
+				name: route.name,
 				type: this.type,
 				page: this.page,
 				rows: 10

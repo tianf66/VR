@@ -4,7 +4,9 @@
 		<van-tabs
 			v-if="active"
 			v-model="active"
-			@click="tabClick"
+			swipeable
+			:duration="0.5"
+			@change="tabClick"
 			title-active-color="#F13031"
 			title-inactive-color="#666666">
 		  <van-tab v-for="(item, index) in channelItem" :key="index" :title="item.name" :name="item.type">
@@ -26,9 +28,9 @@ export default {
 	data() {
 		return {
 			channelItem: [
-				{"name": "精选美图", "type": "vipImageList"},
-				{"name": "精选视频", "type": "vipVideoList"},
-				{"name": "精彩VR", "type": "vipVrVideoList"},
+				{"name": "精选美图", "type": "galleryList"},
+				{"name": "精选视频", "type": "videoList"},
+				{"name": "精彩VR", "type": "vrList"},
 			]
 		}
 	},

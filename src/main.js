@@ -11,7 +11,7 @@ import storage from './utils/storage.js';
 Vue.config.productionTip = false
 
 
-import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List, ImagePreview } from 'vant';
+import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List, ImagePreview, Notify, Popup  } from 'vant';
 Vue.use(Swipe).
 use(SwipeItem).
 use(Tab).
@@ -21,7 +21,9 @@ use(Toast).
 use(Loading).
 use(Image).
 use(List).
-use(ImagePreview);
+use(ImagePreview).
+use(Notify).
+use(Popup);
 
 /* eslint-disable no-new */
 
@@ -34,14 +36,14 @@ router.beforeEach((to, from, next)=>{
 	} else {
 		//
 	}
-	// if(userInfo) {
-	// 	store.commit({
-	//         type: 'SERUSERVIP',
-	//         payload: {
-	//         	isVip: userInfo.isVip
-	//         }
-	//     });
-	// }
+	if(userInfo) {
+		store.commit({
+	        type: 'SERUSERVIP',
+	        payload: {
+	        	isVip: userInfo.isVip
+	        }
+	    });
+	}
 	next();
 });
 
