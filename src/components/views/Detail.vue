@@ -1,10 +1,10 @@
 <template>
-	<div class="detail">
-		<div v-if="isFree">
+	<div class="detail" :key="query.id">
+		<div v-if="isFree || (!isFree && isVip)">
 			<header-view :back="true" style="z-index: 9999;"></header-view>
 			<image-view v-if="type && (type == 'galleryList') && gallery.length" :item="gallery"></image-view>
-			<video-view v-if="type && (type == 'videoList')"></video-view>
-			<vr-view v-if="type && (type == 'vrList')"></vr-view>
+			<video-view v-if="type && (type == 'videoList')" :item="data"></video-view>
+			<vr-view v-if="type && (type == 'vrList')" :item="data"></vr-view>
 		</div>
 		<div v-if="!isFree && !isVip" class="prompt-buy">
 			<header-view :back="true" style="background: #fff;"></header-view>
@@ -42,7 +42,8 @@ export default {
 	computed: {
 		...mapState({
             index: (state) => state.channel.index,
-            gallery: (state) => state.detail.galleryList
+            gallery: (state) => state.detail.galleryList,
+            data: (state) => state.detail.data
         }),
         type() {
         	return this.$route.query.type;
@@ -65,7 +66,7 @@ export default {
         }
 	},
 	mounted() {
-		this.loadDetail();
+		// this.loadDetail();
 	},
 	beforeRouteEnter (to, from, next) {
         next((vm) => {
@@ -74,6 +75,8 @@ export default {
     },
 	methods: {
 		loadDetail() {
+			if(!(this.isFree || (!this.isFree && this.isVip))) return;
+			this.$store.commit('CLEARDETAIL');
 			let type = this.type;
 			let params = {
 				type,
@@ -83,7 +86,7 @@ export default {
 			if(type == 'galleryList') params.galleryId = this.query.id;
 			else params.videoId = this.query.id;
 			this.$store.dispatch('getDetail', params).then((res) => {
-				console.log(res);
+				// console.log(res);
 			}).catch((code) => {
 				this.error = true;
 				// this.$notify('请求数据失败,请稍后再试');

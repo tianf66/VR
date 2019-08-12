@@ -3,7 +3,8 @@
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
     index: 0,
-    isVip: false
+    isVip: false,
+    rechargeOpt: []
 };
 
 import actions from './actions.js';

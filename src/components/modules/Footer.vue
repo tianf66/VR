@@ -36,7 +36,7 @@ export default {
 	methods: {
 		hanldClick(item) {
 			let query = this.$route.query;
-			if(item.route == 'memberCentre') query.opt = 'year';
+			if(item.route == 'memberCentre') query.opt = '5d4d45b0d7fd87036d0cddf5';
 			else delete query.opt;
 			if(item.route == 'vipList') query.type = 'galleryList';
 			else delete query.type;

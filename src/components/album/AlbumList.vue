@@ -62,7 +62,12 @@ export default {
         	let album = this.$store.state.album;
             let type = this.type;
             return type ? album[type].done : false;
-        }
+        },
+        currentPage() {
+            let album = this.$store.state.album;
+            let type = this.type;
+            return album[type].page;
+        },
 	},
 	watch: {
 		$route(to, from) {
@@ -70,8 +75,8 @@ export default {
 				this.clearList();
 				this.page = 1;
 		        this.loadAlbum();
-		        console.log('route')
 			}
+			console.log(to, from);
 	    }
 	},
 	beforeMount() {
@@ -84,7 +89,7 @@ export default {
 			return {
 				name: route.name,
 				type: this.type,
-				page: this.page,
+				page: this.page === 1 ? 1 : this.currentPage + 1,
 				rows: 10
 			}
 		},

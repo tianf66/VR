@@ -1,5 +1,8 @@
 import axios from 'axios';
 import router from '../router';
+import { Notify } from 'vant';
+import {base64Encode} from '@/utils/base64.js';
+
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 import storage from '@/utils/storage.js';
@@ -9,12 +12,12 @@ import config from '@/config.js';
 import utils from '@/utils/';
 
 let user = storage.get('user');
-if(user) {
-    let token = storage.get('user').token;
-    if(token) {
-        axios.defaults.headers['token'] = token;
-    }
-}
+// if(user) {
+//     let token = storage.get('user').token;
+//     if(token) {
+//         axios.defaults.headers['token'] = token;
+//     }
+// }
 
 let urls = config.urls;
 
@@ -29,8 +32,6 @@ let store = {
 */
 store.getAlbum = (params) => {
     return new Promise((resolve, reject) => {
-
-        console.log(params, 'store');
         axios({
             url: urls[params.config],
             timeout: 3000,
@@ -41,6 +42,7 @@ store.getAlbum = (params) => {
                 resolve(res.data);
             }
         }).catch((res) => {
+            Notify('Status Code');
             reject(res.status);
         });
     });
@@ -58,6 +60,7 @@ store.getHome = (params) => {
                 resolve(res.data);
             }
         }).catch((res) => {
+            Notify('Status Code');
             reject(res.status);
         });
     })
@@ -69,7 +72,10 @@ store.getDetail = (params) => {
         axios({
             url: urls[params.type],
             timeout: 3000,
-            params
+            params,
+            headers: {
+                token: storage.get('user').token
+            }
         }).then((response) => {
             let res = response.data;
             if(res.code === 1) {
@@ -84,6 +90,7 @@ store.getDetail = (params) => {
                 reject(res.code);
             }
         }).catch((res) => {
+            Notify('Status Code');
             reject();
         })
     });
@@ -103,9 +110,11 @@ store.getRegister = (params) => {
             if(data && data.code === 1) {
                 resolve(data);
             } else {
+                Notify(`${data.msg}`);
                 reject(data.code);
             }
         }).catch((e) => {
+            Notify('Status Code');
             reject();
         });
     });
@@ -124,9 +133,11 @@ store.getCode = (params) => {
             if(data && data.code === 1) {
                 resolve(data);
             } else {
+                Notify(`${data.msg}`);
                 reject(data.data);
             }
         }).catch((e) => {
+            Notify('Status Code');
             reject('error');
         });
     });
@@ -143,30 +154,98 @@ store.getLogin = (params) => {
         }).then((response) => {
             let data = response.data;
             if(data && data.code === 1) {
+                let info = data.data;
+                if(storage.get('user')) storage.remove('user');
+                // info.isVip = base64Encode('oupengVip');
+                if(info.isVip) info.isVip = base64Encode('oupengVip');
+                storage.set('user', info);
+
+                //发送toke请求，获取token
+                axios.post(urls.token, params, {
+                    timeout: 5000,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then((response) => {
+                    let data = response.data;
+                    if(data.code === 1) {
+                        info.token = data.data;
+                        storage.set('user', info);
+                    }
+                }).catch((e) => {
+                    Notify('请求错误token');
+                    reject('error');
+                });
                 resolve(data);
             } else {
+                Notify(`${data.msg}`);
                 reject(data.data);
             }
         }).catch((e) => {
+            Notify('Status Code');
             reject('error');
         });
     });
-}
+};
 
 //token 获取token
-store.getToken = (params) => {
+// store.getToken = (params) => {
+//     return new Promise((resolve, reject) => {
+//         axios.post(urls.token, params, {
+//             timeout: 5000,
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         }).then((response) => {
+//             let data = response.data;
+//             if(data.code === 1) {
+//                 resolve(data);
+//             }
+//         }).catch((e) => {
+//             Notify('请求错误');
+//             reject('error');
+//         });
+//     });
+// }
+
+//会员中心套餐列表pricePackage
+store.getPricePackage = (params) => {
     return new Promise((resolve, reject) => {
-        axios.post(urls.token, params, {
+        axios({
+            url: urls.pricePackage,
+            timeout: 3000,
+            params
+        }).then((response) => {
+            let res = response.data;
+            if(res.code === 1) {
+                resolve(res.data);
+            } else {
+                Notify('套餐列表请求错误');
+            }
+        }).catch((res) => {
+            Notify('Status Code');
+            reject();
+        });
+    });
+}
+//微信支付wxOrder
+store.getWxOrder = (params) => {
+    return new Promise((resolve, reject) => {
+        axios.post(urls.wxOrder, params, {
             timeout: 5000,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                token: storage.get('user').token
             }
         }).then((response) => {
             let data = response.data;
             if(data.code === 1) {
                 resolve(data);
+            } else {
+                Notify('支付请求失败');
             }
         }).catch((e) => {
+            Notify('Status Code');
             reject('error');
         });
     });

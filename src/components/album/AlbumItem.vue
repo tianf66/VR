@@ -40,12 +40,12 @@ export default {
 			let $router = this.$router, query = this.$route.query, route = this.$route;
 			query = {
 				...query,
-				first: route.name,
+				first: 'detail',
 				id: item.id,
 				isFree: item.isFree
 			}
 			if(!storage.get('user')) {
-				$router.push({"name": 'login', query: query});
+				$router.replace({"name": 'login', query: query});
 			} else {
 				$router.push({"name": 'detail', query: query});
 			}

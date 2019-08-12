@@ -3,6 +3,11 @@ export default {
     //
     SERUSERVIP(state, {payload: {isVip}}) {
         state.isVip = base64Decode(isVip) == 'oupengVip';
-        console.log(state.isVip, isVip);
     },
+    SETRECHARGEOPT(state, {payload: {data}}) {
+    	state.rechargeOpt = data;
+    },
+    CLEARRECHARGEOPT(state) {
+    	state.rechargeOpt = [];
+    }
 };

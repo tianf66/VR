@@ -12,12 +12,10 @@
 </template>
 
 <script>
-import NavView from '@/components/modules/Nav.vue';
 import { mapState } from 'vuex';
 import utils from '@/utils/index';
 export default {
 	components: {
-		NavView
 	},
 	props: {
 		item: Array,

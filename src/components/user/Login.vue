@@ -32,6 +32,8 @@ import user from '@/utils/user.js';
 import HeaderView from '@/components/modules/Header.vue';
 import {base64Encode} from '@/utils/base64.js';
 import storage from '@/utils/storage.js';
+import { Toast } from 'vant';
+
 export default {
     name: 'login',
     components: {
@@ -111,40 +113,52 @@ export default {
             return params;
         },
         toLogin: function() {
-            let _this = this;
-            this.$store.dispatch('getLogin', this.loginParams()).then((res) => {
-                if(res.code == 1) {
-                    let info = res.data;
-                    if(storage.get('user')) storage.remove('user');
-                    // info.isVip = base64Encode('oupengVip');
-                    // if(info.isVip) info.isVip = base64Encode('oupengVip');
-                    info.isVip = base64Encode('oupengVip');
-                    this.$store.commit({
-                        type: 'SERUSERVIP',
-                        payload: {
-                            isVip: info.isVip
-                        }
-                    });
-                    storage.set('user', info);
-                    _this.getToken(info);
-                    let query = _this.$route.query;
-                    _this.$router.push({name: `${query.first}`, query: {...query}});
-                } else {
-                    this.$toast(`${res.msg}`);
-                }
-            });
-        },
-        getToken(info) {
-            let params = {};
-            params.password = this.passwd;
-            params.phone = parseInt(this.userphone);
+            if(this.nameOk && this.passwdOk) {
+                let _this = this;
+                this.$store.dispatch('getLogin', this.loginParams()).then((res) => {
+                    if(res.code == 1) {
+                        let info = res.data;
+                        if(storage.get('user')) storage.remove('user');
+                        // info.isVip = base64Encode('oupengVip');
+                        if(info.isVip) info.isVip = base64Encode('oupengVip');
+                        this.$store.commit({
+                            type: 'SERUSERVIP',
+                            payload: {
+                                isVip: info.isVip
+                            }
+                        });
+                        storage.set('user', info);
+                        // _this.getToken(info);
 
-            this.$store.dispatch('getToken', params).then((res) => {
-                let data = res.data;
-                info.token = data;
-                storage.set('user', info);
-            });
+                        Toast.loading({
+                          duration: 3000,
+                          forbidClick: true,
+                          loadingType: 'spinner',
+                          message: '登录中...'
+                        });
+                        setTimeout(() => {
+                            let query = _this.$route.query;
+                            _this.$router.replace({name: `${query.first}`, query: {...query}});
+                        }, 3000);
+                    } else {
+                        this.$toast(`${res.msg}`);
+                    }
+                });
+            } else {
+                this.$toast(!this.nameOk ? '请输入正确手机号' : '请输入6位以上完整密码');
+            }
         },
+        // getToken(info) {
+        //     let params = {};
+        //     params.password = this.passwd;
+        //     params.phone = parseInt(this.userphone);
+
+        //     this.$store.dispatch('getToken', params).then((res) => {
+        //         let data = res.data;
+        //         info.token = data;
+        //         storage.set('user', info);
+        //     });
+        // },
         passTol: function() {
         	this.passWord = !this.passWord;
         	this.passwdShow = !this.passwdShow;

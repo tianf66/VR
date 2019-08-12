@@ -31,8 +31,8 @@ router.beforeEach((to, from, next)=>{
 	// console.log(to, from);
 	let userInfo = storage.get('user');
 	let query = to.query;
-	if(to.name == 'memberCentre' && !userInfo) {
-		router.push({"name": "login", query: {...query, first: to.name}});
+	if((to.name == 'memberCentre' || from.name == 'memberCentre') && !userInfo) {
+		router.replace({"name": "login", query: {...query, first: to.name}});
 	} else {
 		//
 	}

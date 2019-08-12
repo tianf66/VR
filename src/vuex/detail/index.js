@@ -2,7 +2,8 @@ import dataCenter from '@/store/index.js';
 import storage from '@/utils/storage.js';
 const state = {
     index: 0,
-    galleryList: []
+    galleryList: [],
+    data: {}
 };
 
 const mutations = {
@@ -10,6 +11,13 @@ const mutations = {
       lists.forEach((item, index) => {
         state.galleryList.push(item.url);
       });
+    },
+    SETVIDEODATA(state, {payload: {data}}) {
+      state.data = data;
+    },
+    CLEARDETAIL(state) {
+      state.galleryList = [];
+      state.data = {};
     }
 };
 
@@ -23,26 +31,38 @@ const actions = {
             //vip图集
             if(type == 'galleryList' && !params.isFree) {
               params.type = 'noFreeImageDetail';
-              params.userId = userInfo.user.userId;
-              params.token = userInfo.token;
+              params.userId = userInfo.user.id;
+              // params.token = userInfo.token;
+              params.phone = userInfo.user.phone;
+              params.userId = userInfo.user.id;
+              params.orderId = userInfo.userPricePackage.orderId;
             }
             //普通视频
             if(type == 'videoList' || type == 'vrList') params.type = 'freeVideoDetail';
             //vip视频
             if(type == 'videoList' || type == 'vrList' && !params.isFree) {
               params.type = 'noFreeVideoDetail';
-              params.userId = userInfo.user.userId;
-              params.token = userInfo.token;
+              params.phone = userInfo.user.phone;
+              params.userId = userInfo.user.id;
+              params.orderId = userInfo.userPricePackage.orderId;
+              // params.token = userInfo.token;
             }
 
             // store
             dataCenter.getDetail(params).then((res) => {
                 let data = res;
-                if(params.urls == 'imageDetail' && data) {
+                if((params.type == 'freeImageDetail' || params.type == 'noFreeImageDetail') && data) {
                   commit({
                     type: 'SETGALLERYLIST',
                     payload: {
                       lists: data
+                    }
+                  })
+                } else {
+                  commit({
+                    type: 'SETVIDEODATA',
+                    payload: {
+                      data
                     }
                   })
                 }

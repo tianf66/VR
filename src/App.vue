@@ -26,6 +26,6 @@ export default {
 <style>
 @import '../static/scss/base.css';
 .sprite {
-  background: url('../static/Sprite.png') no-repeat;
+  background: url('//i.opfed.com/opgirl/miguo/sprite.png') no-repeat;
 }
 </style>

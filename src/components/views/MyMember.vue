@@ -34,7 +34,13 @@ export default {
         })
 	},
 	mounted() {
-		//
+		this.$store.commit('CLEARRECHARGEOPT');
+		this.getPricePackage();
+	},
+	methods: {
+		getPricePackage() {
+			this.$store.dispatch('getPricePackage');
+		}
 	}
 }
 </script>

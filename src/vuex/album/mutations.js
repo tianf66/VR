@@ -2,6 +2,7 @@ export default {
     SETALBUM(state, {payload: {page, lists, type, done}}) {
         state[type].lists.push([]);
         state[type].done = done;
+        state[type].page = page;
         lists.forEach((list, index) => {
             let sList = state[type].lists;
             if(list.slot) sList.push(list);

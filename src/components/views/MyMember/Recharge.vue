@@ -1,20 +1,20 @@
 <template>
-	<div class="recharge">
-		<ul class="option" v-if="rechargeOpt">
+	<div class="recharge" v-if="rechargeOpt">
+		<ul class="option">
 			<li
-				:class="item.type == opt ? 'check-opt' : 'opt'"
+				:class="item.id == opt ? 'check-opt' : 'opt'"
 				v-for="(item, index) in rechargeOpt"
 				:key="index"
 				@click="optClick(item, index)">
-					<p v-if="item.type == 'year'" class="sprite recommend-icon"></p>
+					<p v-if="item.isRecommend" class="sprite recommend-icon"></p>
 					<p class="option-top">
 						<span class="title">{{item.title}}</span>
-						<span class="gift" v-if="item.gift">{{item.gift}}</span>
+						<span class="gift" v-if="item.remark">{{item.remark}}</span>
 					</p>
 					<p class="option-bottom">
-						<span class="current-price"><i>￥</i>{{item.currentPrice}}</span>
-						<span class="original-price"><i>￥{{item.originalPrice}}</i> | {{item.discount}}</span>
-						<span class="price-day">￥{{item.priceDay}}</span>
+						<span class="current-price"><i>￥</i>{{item.discountPriceTotal}}</span>
+						<span class="original-price"><i>￥{{item.originalPriceTotal}}</i> | 限时{{item.discount}}折</span>
+						<span class="price-day">￥{{item.discountPricePerDay}}/天</span>
 					</p>
 			</li>
 		</ul>
@@ -29,7 +29,7 @@
 		<!-- end -->
 
 		<!-- 支付button start -->
-		<div class="sub-buttom">
+		<div class="sub-buttom" @click="hanldOrder">
 			立即支付
 		</div>
 	</div>
@@ -37,6 +37,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import storage from '@/utils/storage.js';
 import VipPrivilege from '@/components/views/MyMember/VipPrivilege';
 export default {
 	components: {
@@ -49,7 +50,7 @@ export default {
 	},
 	computed: {
 		...mapState({
-            rechargeOpt: (state) => state.common.rechargeOpt
+            rechargeOpt: (state) => state.user.rechargeOpt
         }),
         opt() {
         	return this.$route.query.opt;
@@ -61,7 +62,20 @@ export default {
 	methods: {
 		optClick(item, index) {
 			let query = this.$route.query;
-			this.$router.replace({"name": 'memberCentre', query: {...query, opt: item.type}});
+			this.$router.replace({"name": 'memberCentre', query: {...query, opt: item.id}});
+		},
+		hanldOrder() {
+			let userInfo = storage.get('user');
+			let params = {
+				pricePackageId: this.opt,
+				userId: userInfo.user.id
+			}
+			this.$store.dispatch('getWxOrder', params).then((res) => {
+
+				let data = res.data;
+
+				window.open(data.mwebUrl);
+			});
 		}
 	}
 }
@@ -110,7 +124,7 @@ export default {
 				color: #A7A7A7;
 				letter-spacing: 0;
 				position: absolute;
-			    left: 0.8rem;
+			    left: 1rem;
 			    bottom: 0.12rem;
 				i {
 					text-decoration:line-through;

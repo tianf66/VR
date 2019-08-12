@@ -6,7 +6,8 @@
 		</div>
 		<div class="user">
 			<p class="user-name">用户{{userName}}</p>
-			<p class="title">您还不是VIP会员，赶快加入吧～</p>
+			<p class="title" v-if="!isVip">您还不是VIP会员，赶快加入吧～</p>
+			<p class="title" v-if="isVip">您的会员总时长将在<span style="color: #E5CC89;">{{userInfo.userPricePackage.expireTime}}</span>到期</p>
 		</div>
 	</div>
 </template>

@@ -159,7 +159,9 @@ export default {
                 if(this.number && this.code && this.passwd) {
 
                     this.$store.dispatch('getRegister', this.registerParams()).then((res) => {
-                        this.$toast(`${data.msg}`);
+                        // this.$toast(`${res.msg}`);
+                        let query = _this.route.query;
+                        _this.$router.push({name: query.memberCentre, query: {...query}});
                     });
                 }
             }
