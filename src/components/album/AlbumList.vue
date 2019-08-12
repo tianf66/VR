@@ -4,6 +4,7 @@
 			<van-list
 			  v-model="list_loading"
 			  :finished="done"
+			  :offset="50"
 			  finished-text="没有更多了"
 			  @load="onLoad">
 			  	<div
@@ -76,7 +77,11 @@ export default {
 				this.page = 1;
 		        this.loadAlbum();
 			}
-			console.log(to, from);
+			if(to.name == 'vipList' && from.name == 'channel') {
+				this.clearList();
+				this.page = 1;
+		        this.loadAlbum();
+			}
 	    }
 	},
 	beforeMount() {

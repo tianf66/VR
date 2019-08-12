@@ -11,7 +11,6 @@ function getColumnsData(lastColumns, lists) {
 
 const actions = {
     loadAlbum({commit, state, dispatch}, params) {
-        console.log(params);
         if(params.name == 'vipList') {
             params.config = `vip_${params.type}`;
         } else {

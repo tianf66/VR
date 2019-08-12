@@ -50,7 +50,7 @@ export default {
 			        //播放器不支持全景播放回调
 			        errorCallBack: function (e) {
 			            // console.log("错误状态：" + e);
-			            _this.$notify('播放器不支持全景播放!');
+			            // _this.$notify('播放器不支持全景播放!');
 			        },
 			        //浏览器不支持全屏回调
 			        fsCallBack: function (status, playObj) {

@@ -29,7 +29,7 @@ export default {
         },
         title() {
         	let type = this.listType;
-        	let title = type == 'imageList' ? '精选美图' : type == 'videoList' ? '精选视频' : '精彩VR';
+        	let title = type == 'galleryList' ? '精选美图' : type == 'videoList' ? '精选视频' : '精彩VR';
         	return title;
         }
 	},

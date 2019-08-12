@@ -65,6 +65,7 @@ export default {
 	position: relative;
 	.item {
 		width: 46.5%;
+		position: relative;
 		margin: 0.05rem 0.06rem;
 	}
 	.van-image__img {
@@ -84,13 +85,13 @@ export default {
 	}
 	.vip-icon {
 		position: absolute;
-		top: 0.1rem;
-		right: 0.05rem;
-		width: 0.4rem;
-		height: 0.2rem;
-		background-size: 3rem;
-		background-position: -0.35rem -0.0605rem;
-		z-index: 99;
+	    top: 0;
+	    right: 0;
+	    width: 0.4rem;
+	    height: 0.2rem;
+	    background-size: 3rem;
+	    background-position: -0.35rem -0.0605rem;
+    	z-index: 99;
 	}
 }
 </style>

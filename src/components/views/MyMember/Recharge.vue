@@ -73,8 +73,8 @@ export default {
 			this.$store.dispatch('getWxOrder', params).then((res) => {
 
 				let data = res.data;
-
-				window.open(data.mwebUrl);
+				window.location.href = `${data.mwebUrl}`;
+				// window.open(data.mwebUrl);
 			});
 		}
 	}
