@@ -12,6 +12,7 @@ import config from '@/config.js';
 import utils from '@/utils/';
 
 let user = storage.get('user');
+
 // if(user) {
 //     let token = storage.get('user').token;
 //     if(token) {
@@ -31,7 +32,10 @@ let store = {
     @param 列表页
 */
 store.getAlbum = (params) => {
-    if(user) params.phone = user.user.phone;
+    if(user) {
+        params.phone = user.user.phone;
+        params.userId = user.user.id;
+    }
     return new Promise((resolve, reject) => {
         axios({
             url: urls[params.config],
@@ -50,7 +54,10 @@ store.getAlbum = (params) => {
 };
 // 首页list
 store.getHome = (params) => {
-    if(user) params.phone = user.user.phone;
+    if(user) {
+        params.phone = user.user.phone;
+        params.userId = user.user.id;
+    }
     return new Promise((resolve, reject) => {
         axios({
             url: urls.home,
@@ -70,7 +77,10 @@ store.getHome = (params) => {
 
 store.getDetail = (params) => {
     // imageDetail\videoDetail
-    if(user) params.phone = user.user.phone;
+    if(user) {
+        params.phone = user.user.phone;
+        params.userId = user.user.id;
+    }
     return new Promise((resolve, reject) => {
         axios({
             url: urls[params.type],
@@ -163,6 +173,7 @@ store.getLogin = (params) => {
                 if(info.isVip) info.isVip = base64Encode('oupengVip');
                 storage.set('user', info);
 
+                params.userId = info.user.id;
                 //发送toke请求，获取token
                 axios.post(urls.token, params, {
                     timeout: 5000,
@@ -233,7 +244,10 @@ store.getPricePackage = (params) => {
 }
 //微信支付wxOrder
 store.getWxOrder = (params) => {
-    if(user) params.phone = user.user.phone;
+    if(user) {
+        params.phone = user.user.phone;
+        params.userId = user.user.id;
+    }
     return new Promise((resolve, reject) => {
         axios.post(urls.wxOrder, params, {
             timeout: 5000,
@@ -262,7 +276,10 @@ store.getWxOrder = (params) => {
 }
 // 微信支付订单查询
 store.wxOrderSuccess = (params) => {
-    if(user) params.phone = user.user.phone;
+    if(user) {
+        params.phone = user.user.phone;
+        params.userId = user.user.id;
+    }
     return new Promise((resolve, reject) => {
         axios({
             url: urls.wxOrderSuccess,

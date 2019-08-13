@@ -70,7 +70,7 @@ export default {
         currentPage() {
             let album = this.$store.state.album;
             let type = this.type;
-            return album[type].page;
+            return type ? album[type].page : '';
         },
 	},
 	watch: {
@@ -89,7 +89,7 @@ export default {
 	    time(to, from) {
 	    	let type = this.type;
 	    	if(this.actived && (type == 'galleryList' || type == 'videoList' || type == 'vrList')) {
-	    		console.log('time');
+	    		// console.log('time');
 	    		this.clearList();
 	    		this.page = 1;
 	    		this.loadAlbum();
@@ -130,7 +130,7 @@ export default {
 	      // 异步更新数据
 	      setTimeout(() => {
 	      	this.page += 1;
-	      	console.log('onLoad');
+	      	// console.log('onLoad');
 	      	this.loadAlbum();
 	        // 加载状态结束
 	      }, 1000);
