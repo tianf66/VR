@@ -5,6 +5,7 @@
 			  v-model="list_loading"
 			  :finished="done"
 			  :offset="50"
+			  :immediate-check="false"
 			  finished-text="没有更多了"
 			  @load="onLoad">
 			  	<div
@@ -36,7 +37,9 @@ export default {
 		AlbumItem
 	},
 	props: {
-		type: String
+		type: String,
+		actived: false,
+        time: '',
 	},
 	data() {
 		return {
@@ -71,17 +74,26 @@ export default {
         },
 	},
 	watch: {
-		$route(to, from) {
-			if(to.name == 'channel' && from.name == 'home') {
-				this.clearList();
-				this.page = 1;
-		        this.loadAlbum();
-			}
-			if(to.name == 'vipList' && from.name == 'channel') {
-				this.clearList();
-				this.page = 1;
-		        this.loadAlbum();
-			}
+		'$route.query.type'(to, from) {
+			// if(to.name == 'channel' && from.name == 'home') {
+			// 	this.clearList();
+			// 	this.page = 1;
+		 //        this.loadAlbum();
+			// }
+			// if(to.name == 'vipList' && from.name == 'vipList') {
+			// 	this.clearList();
+			// 	this.page = 1;
+		 //        this.loadAlbum();
+			// }
+	    },
+	    time(to, from) {
+	    	let type = this.type;
+	    	if(this.actived && (type == 'galleryList' || type == 'videoList' || type == 'vrList')) {
+	    		console.log('time');
+	    		this.clearList();
+	    		this.page = 1;
+	    		this.loadAlbum();
+	    	}
 	    }
 	},
 	beforeMount() {
@@ -118,6 +130,7 @@ export default {
 	      // 异步更新数据
 	      setTimeout(() => {
 	      	this.page += 1;
+	      	console.log('onLoad');
 	      	this.loadAlbum();
 	        // 加载状态结束
 	      }, 1000);

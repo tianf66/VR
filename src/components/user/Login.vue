@@ -131,7 +131,7 @@ export default {
                         // _this.getToken(info);
 
                         Toast.loading({
-                          duration: 3000,
+                          duration: 1000,
                           forbidClick: true,
                           loadingType: 'spinner',
                           message: '登录中...'
@@ -139,7 +139,7 @@ export default {
                         setTimeout(() => {
                             let query = _this.$route.query;
                             _this.$router.replace({name: `${query.first}`, query: {...query}});
-                        }, 3000);
+                        }, 1000);
                     } else {
                         this.$toast(`${res.msg}`);
                     }

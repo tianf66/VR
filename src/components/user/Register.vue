@@ -131,7 +131,6 @@ export default {
             	if(!this.number) this.$toast('请填写手机号码');
                 else if(!this.codding) {
                     this.$store.dispatch('getCode', this.codeParams()).then((res) => {
-                        console.log(res);
                         if(res.code == 1) this.countDown();
                         else this.$toast('获取验证码失败');
                     });
@@ -159,8 +158,9 @@ export default {
                 if(this.number && this.code && this.passwd) {
 
                     this.$store.dispatch('getRegister', this.registerParams()).then((res) => {
-                        // this.$toast(`${res.msg}`);
-                        let query = _this.route.query;
+
+                        this.$toast(`${res.msg}`);
+                        let query = _this.$route.query;
                         _this.$router.push({name: query.memberCentre, query: {...query}});
                     });
                 }

@@ -2,7 +2,7 @@
 	<div class="privilege">
 		<div class="privilege-title">
 			<span class="title">会员特权</span>
-			<span class="protocol">会员协议</span>
+			<span class="protocol" @click="protocol">会员协议</span>
 		</div>
 		<div class="privilege-list">
 			<div v-for="(item, index) in privilege" class="item">
@@ -35,6 +35,14 @@ export default {
 	},
 	mounted() {
 		//
+	},
+	methods: {
+		protocol() {
+			let query = this.$route.query;
+			this.$router.push({name: 'protocol', query: {...query}});
+
+			document.documentElement.scrollTop = document.body.scrollTop = 0;
+		}
 	}
 }
 </script>

@@ -11,7 +11,7 @@ import storage from './utils/storage.js';
 Vue.config.productionTip = false
 
 
-import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List, ImagePreview, Notify, Popup  } from 'vant';
+import { Swipe, SwipeItem, Tab, Tabs, PullRefresh, Toast, Loading, Image, List, ImagePreview, Notify, Popup, Dialog } from 'vant';
 Vue.use(Swipe).
 use(SwipeItem).
 use(Tab).
@@ -23,7 +23,8 @@ use(Image).
 use(List).
 use(ImagePreview).
 use(Notify).
-use(Popup);
+use(Popup).
+use(Dialog);
 
 /* eslint-disable no-new */
 
@@ -31,20 +32,20 @@ router.beforeEach((to, from, next)=>{
 	// console.log(to, from);
 	let userInfo = storage.get('user');
 	let query = to.query;
-	if((to.name == 'memberCentre' || from.name == 'memberCentre') && !userInfo) {
+	if((to.name == 'memberCentre' || to.name == 'detail') && !userInfo) {
 		router.replace({"name": "login", query: {...query, first: to.name}});
 	} else {
-		//
+		if(userInfo) {
+			store.commit({
+		        type: 'SERUSERVIP',
+		        payload: {
+		        	isVip: userInfo.isVip
+		        }
+		    });
+		}
+		next();
 	}
-	if(userInfo) {
-		store.commit({
-	        type: 'SERUSERVIP',
-	        payload: {
-	        	isVip: userInfo.isVip
-	        }
-	    });
-	}
-	next();
+
 });
 
 // axios.interceptors.request.use(

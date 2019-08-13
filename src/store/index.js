@@ -31,6 +31,7 @@ let store = {
     @param 列表页
 */
 store.getAlbum = (params) => {
+    if(user) params.phone = user.user.phone;
     return new Promise((resolve, reject) => {
         axios({
             url: urls[params.config],
@@ -49,6 +50,7 @@ store.getAlbum = (params) => {
 };
 // 首页list
 store.getHome = (params) => {
+    if(user) params.phone = user.user.phone;
     return new Promise((resolve, reject) => {
         axios({
             url: urls.home,
@@ -68,6 +70,7 @@ store.getHome = (params) => {
 
 store.getDetail = (params) => {
     // imageDetail\videoDetail
+    if(user) params.phone = user.user.phone;
     return new Promise((resolve, reject) => {
         axios({
             url: urls[params.type],
@@ -84,7 +87,7 @@ store.getDetail = (params) => {
                 let query = router.history.current.query;
                     query.first = 'detail';
 
-                router.push({name: "login", query: {...query}});
+                router.replace({name: "login", query: {...query}});
                 storage.remove('user');
             } else {
                 reject(res.code);
@@ -230,6 +233,7 @@ store.getPricePackage = (params) => {
 }
 //微信支付wxOrder
 store.getWxOrder = (params) => {
+    if(user) params.phone = user.user.phone;
     return new Promise((resolve, reject) => {
         axios.post(urls.wxOrder, params, {
             timeout: 5000,
@@ -241,12 +245,48 @@ store.getWxOrder = (params) => {
             let data = response.data;
             if(data.code === 1) {
                 resolve(data);
+            } else if(data.code === 100) {//token失效需重新登录;
+                Notify('需要重新登录');
+                let query = router.history.current.query;
+
+                router.replace({name: "login", query: {...query}});
+                storage.remove('user');
             } else {
-                Notify('支付请求失败');
+                Notify(`${data.msg}`);
             }
         }).catch((e) => {
             Notify('Status Code');
             reject('error');
+        });
+    });
+}
+// 微信支付订单查询
+store.wxOrderSuccess = (params) => {
+    if(user) params.phone = user.user.phone;
+    return new Promise((resolve, reject) => {
+        axios({
+            url: urls.wxOrderSuccess,
+            timeout: 3000,
+            params,
+            headers: {
+                token: storage.get('user').token
+            }
+        }).then((response) => {
+            let data = response.data;
+            if(data.code === 1) {
+                resolve(data);
+            } else if(data.code === 100) {//token失效需重新登录;
+                Notify('需要重新登录');
+                let query = router.history.current.query;
+
+                router.replace({name: "login", query: {...query}});
+                storage.remove('user');
+            } else {
+                Notify(`${data.msg}`);
+            }
+        }).catch((res) => {
+            Notify('Status Code');
+            reject();
         });
     });
 }

@@ -6,6 +6,7 @@ import Channel from '@/components/views/Channel';
 import Detail from '@/components/views/Detail';
 import VipList from '@/components/views/VipList.vue';
 import MemberCentre from '@/components/views/MyMember.vue';
+import Protocol from '@/components/views/MyMember/Protocol.vue';
 
 import Register from '@/components/user/Register.vue';
 import Login from '@/components/user/Login.vue';
@@ -59,5 +60,10 @@ export default new Router({
        name: 'password',
        component: Password
     },
+    {
+      path: '/protocol',
+      name: 'protocol',
+      component: Protocol
+    }
   ]
 })

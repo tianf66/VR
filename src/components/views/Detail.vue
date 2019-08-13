@@ -56,10 +56,7 @@ export default {
         	return this.$store.state.user.isVip;
         },
         buyTitle() {
-        	let name = (this.type == 'imageList' || this.type == 'vipImageList') ? '图集' :
-        			   (this.type == 'videoList' || this.type == 'vipVideoList') ? '视频' :
-        			   (this.type == 'vrVideoList' || this.type == 'vipVrVideoList') ? 'VR视频' : '';
-        	return `此${name}为VIP特约${name}，请购买VIP服务后观看`;
+        	return `此为VIP特约${name}，请购买VIP服务后观看`;
         },
         query() {
         	return this.$route.query;

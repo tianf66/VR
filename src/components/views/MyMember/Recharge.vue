@@ -32,6 +32,15 @@
 		<div class="sub-buttom" @click="hanldOrder">
 			立即支付
 		</div>
+		<van-dialog
+		  v-model="isOrderId"
+		  title="请在微信中完成支付"
+		  cancelButtonText="返回"
+		  confirmButtonText="支付成功"
+		  @confirm="getWxOrderSuccess"
+		  @cancel="getWxOrderSuccess"
+		  show-cancel-button>
+		</van-dialog>
 	</div>
 </template>
 
@@ -39,13 +48,22 @@
 import { mapState } from 'vuex';
 import storage from '@/utils/storage.js';
 import VipPrivilege from '@/components/views/MyMember/VipPrivilege';
+import { Dialog } from 'vant';
+import {base64Encode} from '@/utils/base64.js';
+
 export default {
 	components: {
 		VipPrivilege
 	},
 	data() {
 		return {
-			//
+			isOrderId: false
+		}
+	},
+	watch: {
+		//
+		orderId(val) {
+			console.log(val);
 		}
 	},
 	computed: {
@@ -57,7 +75,9 @@ export default {
         }
 	},
 	mounted() {
-		//
+		if(storage.get('orderId')) {
+			this.isOrderId = true;
+		}
 	},
 	methods: {
 		optClick(item, index) {
@@ -73,9 +93,37 @@ export default {
 			this.$store.dispatch('getWxOrder', params).then((res) => {
 
 				let data = res.data;
+				storage.set('orderId', data.orderId);
+				this.isOrderId = true;
 				window.location.href = `${data.mwebUrl}`;
 				// window.open(data.mwebUrl);
 			});
+		},
+		getWxOrderSuccess() {
+			let userInfo = storage.get('user');
+			let params = {
+				userId: userInfo.user.id,
+				phone: userInfo.user.phone,
+				orderId: storage.get('orderId')
+			}
+			this.$store.dispatch('getWxOrderSuccess', params).then((data) => {
+				if(data.code == 1) {
+					let code = data.data;
+					let userInfo = storage.get('user');
+					if(code) {
+						userInfo.isVip = base64Encode('oupengVip');
+						storage.set('user', userInfo);
+						this.$store.commit({
+                            type: 'SERUSERVIP',
+                            payload: {
+                                isVip: userInfo.isVip
+                            }
+                        });
+					}
+					this.isOrderId = false;
+					storage.remove('orderId');
+				}
+			})
 		}
 	}
 }
@@ -119,7 +167,7 @@ export default {
 			}
 			.original-price {
 				font-family: PingFangSC-Regular;
-				font-size: 0.15rem;
+				font-size: 0.13rem;
 				margin-left: 0.05rem;
 				color: #A7A7A7;
 				letter-spacing: 0;
@@ -133,7 +181,7 @@ export default {
 			}
 			.price-day {
 				position: absolute;
-				right: 0.15rem;
+				right: 0.1rem;
 				bottom: 0.1rem;
 				font-family: PingFangSC-Medium;
 				font-size: 0.25rem;

@@ -27,6 +27,7 @@ export default {
 		currRoute() {
 			let name = this.$route.name;
 			if(name == 'channel') name = 'home';
+			if(name == 'protocol') name = 'memberCentre';
 			return name;
 		}
 	},

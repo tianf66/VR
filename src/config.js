@@ -16,6 +16,7 @@ let config = {
 
         pricePackage: '/api/pricePackage/findAllPricePackageList',//套餐列表
         wxOrder: '/api/pricePackage/userBuyPricePackage',//微信支付
+        wxOrderSuccess: '/api/pricePackage/userOrderIsPaySuccess',//微信支付状态查询
         register: '/api/user/register', //注册
         code: '/api/sms/sendSmsCode', //验证码
         login: '/api/user/login', //登录
@@ -45,6 +46,7 @@ let proxyConfig = {
         token: '/proxy/api/user/genToken', //生成token
         pricePackage: '/proxy/api/pricePackage/findAllPricePackageList',//套餐列表
         wxOrder: '/proxy/api/pricePackage/userBuyPricePackage',//微信支付
+        wxOrderSuccess: '/proxy/api/pricePackage/userOrderIsPaySuccess',//微信支付状态查询
     }
 };
 

@@ -73,5 +73,12 @@ export default {
                 resolve(data);
             });
         });
+    },
+    getWxOrderSuccess({commit, state, dispatch}, params) {
+        return new Promise((resolve, reject) => {
+            dataCenter.wxOrderSuccess(params).then((data) => {
+                resolve(data);
+            });
+        });
     }
 };
